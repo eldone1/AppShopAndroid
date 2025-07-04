@@ -57,7 +57,7 @@ class RegistroVendedorActivity : AppCompatActivity() {
         } else if (password.isEmpty()){
             binding.etPasswordV.error = "Ingrese password"
             binding.etPasswordV.requestFocus()
-        } else if (password.length < 6){
+        } else if (password.length <= 6){
             binding.etPasswordV.error = "Necesita 6 o mas car."
             binding.etPasswordV.requestFocus()
         } else if (cpassword.isEmpty()){
