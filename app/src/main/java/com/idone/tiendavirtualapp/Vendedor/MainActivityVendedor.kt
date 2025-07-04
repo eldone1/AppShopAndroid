@@ -1,5 +1,6 @@
 package com.idone.tiendavirtualapp.Vendedor
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -12,6 +13,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.idone.tiendavirtualapp.R
 import com.idone.tiendavirtualapp.Vendedor.Buttom_Nav_Fragments_Vendedor.FragmentMisProductosV
 import com.idone.tiendavirtualapp.Vendedor.Buttom_Nav_Fragments_Vendedor.FragmentOrdenesV
@@ -23,6 +25,7 @@ import com.idone.tiendavirtualapp.databinding.ActivityMainVendedorBinding
 class MainActivityVendedor : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding : ActivityMainVendedorBinding
+    private var firebaseAuth : FirebaseAuth?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,9 @@ class MainActivityVendedor : AppCompatActivity(), NavigationView.OnNavigationIte
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        comprobarSesion()
 
         binding.navigationView.setNavigationItemSelectedListener(this)
 
@@ -47,6 +53,16 @@ class MainActivityVendedor : AppCompatActivity(), NavigationView.OnNavigationIte
         
         replaceFragment(FragmentInicioV())
         binding.navigationView.setCheckedItem(R.id.op_inicio_v)
+    }
+
+    private fun comprobarSesion() {
+        /*Si no ha iniciado sesion go to RV*/
+        if(firebaseAuth!!.currentUser==null){
+            startActivity(Intent(applicationContext, RegistroVendedorActivity::class.java))
+            Toast.makeText(applicationContext, "Vendedor no registrado o logeado", Toast.LENGTH_SHORT).show()
+        }else{
+            Toast.makeText(applicationContext, "Vendedor en linea", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun replaceFragment(fragment: Fragment) {
